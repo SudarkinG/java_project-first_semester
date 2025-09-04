@@ -1,0 +1,23 @@
+# IDE-specific metadata
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Target folders
+target/
+out/
+build/
+
+# Class files
+*.class
+
+# Temporary and logs
+tmp/
+temp/
+logs/
+*.log
+
+# Dependency caches
+lib/
+node_modules/
