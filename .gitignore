@@ -21,3 +21,9 @@ logs/
 # Dependency caches
 lib/
 node_modules/
+
+# Package Files #
+#################
+*.jar
+*.war
+*.ear
