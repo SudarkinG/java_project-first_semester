@@ -3,7 +3,7 @@ name: Print Current Time for All Branches
 on:
   push:
     branches:
-      - '*'  # срабатывание на любую ветку
+      - '*' 
 
 jobs:
   print-time:
