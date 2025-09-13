@@ -1,0 +1,17 @@
+name: Print Current Time for All Branches
+
+on:
+  push:
+    branches:
+      - '*'  # срабатывание на любую ветку
+
+jobs:
+  print-time:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Out Code
+        uses: actions/checkout@v3
+
+      - name: Get Current Time
+        run: |
+          echo "The current time is: $(date)"
