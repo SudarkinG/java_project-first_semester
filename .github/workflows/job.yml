@@ -1,17 +1,19 @@
-name: Print Current Time for All Branches
+name: Show Date and Time
 
 on:
   push:
     branches:
-      - '*' 
+      - '*'
+  pull_request:
+    types: [opened, reopened, synchronized]
 
 jobs:
-  print-time:
+  date_and_time:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Out Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Get Current Time
+      - name: Display current date and time
         run: |
-          echo "The current time is: $(date)"
+          echo "Current date and time is: $(date '+%F %T')"
