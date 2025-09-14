@@ -36,7 +36,7 @@ jobs:
         
       - name: Upload Artifact
         if: success() && startsWith(github.ref, 'refs/pull/')
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: maven-build-output
           path: target/*.jar
