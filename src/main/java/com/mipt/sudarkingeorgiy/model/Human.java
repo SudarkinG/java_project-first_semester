@@ -6,6 +6,8 @@ public class Human {
     private int age;
     private boolean isWorking;
 
+
+
     public Human(String firstName, String lastName, int age, boolean isWorking) {
         this.firstName = firstName;
         this.lastName = lastName;
