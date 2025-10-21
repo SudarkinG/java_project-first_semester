@@ -1,7 +1,7 @@
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class CustomArrayList<A> implements CustomList<A> {
+public class CustomArrayList<A> implements CustomList<A> , Iterable<A>{
 
     private static final int DEFAULT_CAPACITY = 10;
     private static final double EXPANSION_FACTOR = 1.5;
