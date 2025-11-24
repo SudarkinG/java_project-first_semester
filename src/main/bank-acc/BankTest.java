@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -115,4 +114,5 @@ public class BankTest {
         assertTrue(t1.isAlive() || t2.isAlive(), "Deadlock should occur");
     }
 }
+
 
