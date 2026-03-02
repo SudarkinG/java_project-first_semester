@@ -55,7 +55,7 @@ public class TaskService {
             Files.writeString(statsFile, content);
             log.info("[TaskService] Statistics saved to {}", statsFile.toAbsolutePath());
         } catch (IOException e) {
-            log.warn("[TaskService] Failed to save statistics to file", e);
+            log.error("[TaskService] Failed to save statistics to file", e);
         }
         taskCache.clear();
     }

@@ -1,6 +1,6 @@
 package com.mipt.sudarkingeorgiy;
 
-import com.mipt.sudarkingeorgiy.model.Task;
+import com.mipt.sudarkingeorgiy.model.TaskDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ class TaskControllerIntegrationTest {
     @Test
     @DisplayName("GET /api/tasks позитивный")
     void getAllTasks_positive_returnsList() {
-        ResponseEntity<Task[]> response = restTemplate.getForEntity(baseUrl(), Task[].class);
+        ResponseEntity<TaskDto[]> response = restTemplate.getForEntity(baseUrl(), TaskDto[].class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
     }
@@ -47,12 +47,12 @@ class TaskControllerIntegrationTest {
     @Test
     @DisplayName("GET /api/tasks/{id} поз")
     void getTaskById_positive_existingTask_returnsTask() {
-        Task created = restTemplate.postForObject(baseUrl(),
-                new Task(null, "Test", "Desc", false), Task.class);
+        TaskDto created = restTemplate.postForObject(baseUrl(),
+                new TaskDto(null, "Test", "Desc", false), TaskDto.class);
         assertThat(created).isNotNull();
         assertThat(created.getId()).isNotNull();
 
-        ResponseEntity<Task> response = restTemplate.getForEntity(baseUrl() + "/" + created.getId(), Task.class);
+        ResponseEntity<TaskDto> response = restTemplate.getForEntity(baseUrl() + "/" + created.getId(), TaskDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getTitle()).isEqualTo("Test");
@@ -61,15 +61,15 @@ class TaskControllerIntegrationTest {
     @Test
     @DisplayName("GET нег")
     void getTaskById_negative_notFound_returns404() {
-        ResponseEntity<Task> response = restTemplate.getForEntity(baseUrl() + "/99999", Task.class);
+        ResponseEntity<TaskDto> response = restTemplate.getForEntity(baseUrl() + "/99999", TaskDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     @DisplayName("POST /api/tasks поз")
     void createTask_positive_returnsCreated() {
-        Task task = new Task(null, "New Task", "Description", false);
-        ResponseEntity<Task> response = restTemplate.postForEntity(baseUrl(), task, Task.class);
+        TaskDto task = new TaskDto(null, "New Task", "Description", false);
+        ResponseEntity<TaskDto> response = restTemplate.postForEntity(baseUrl(), task, TaskDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getId()).isNotNull();
@@ -79,7 +79,7 @@ class TaskControllerIntegrationTest {
     @Test
     @DisplayName("POST нег")
     void createTask_negative_wrongUrl_returns404() {
-        Task task = new Task(null, "New", "Desc", false);
+        TaskDto task = new TaskDto(null, "New", "Desc", false);
         ResponseEntity<String> response = restTemplate.postForEntity(
                 "http://localhost:" + port + "/api/task", task, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
@@ -88,16 +88,16 @@ class TaskControllerIntegrationTest {
     @Test
     @DisplayName("PUT /api/tasks/{id} поз")
     void updateTask_positive_existingTask_returnsOk() {
-        Task created = restTemplate.postForObject(baseUrl(),
-                new Task(null, "Original", "Desc", false), Task.class);
+        TaskDto created = restTemplate.postForObject(baseUrl(),
+                new TaskDto(null, "Original", "Desc", false), TaskDto.class);
         assertThat(created).isNotNull();
 
-        Task update = new Task(created.getId(), "Updated", "New desc", true);
-        ResponseEntity<Task> response = restTemplate.exchange(
+        TaskDto update = new TaskDto(created.getId(), "Updated", "New desc", true);
+        ResponseEntity<TaskDto> response = restTemplate.exchange(
                 baseUrl() + "/" + created.getId(),
                 HttpMethod.PUT,
                 new HttpEntity<>(update),
-                Task.class);
+                TaskDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getTitle()).isEqualTo("Updated");
@@ -107,20 +107,20 @@ class TaskControllerIntegrationTest {
     @Test
     @DisplayName("PUT нег")
     void updateTask_negative_notFound_returns404() {
-        Task update = new Task(99999L, "Updated", "Desc", true);
-        ResponseEntity<Task> response = restTemplate.exchange(
+        TaskDto update = new TaskDto(99999L, "Updated", "Desc", true);
+        ResponseEntity<TaskDto> response = restTemplate.exchange(
                 baseUrl() + "/99999",
                 HttpMethod.PUT,
                 new HttpEntity<>(update),
-                Task.class);
+                TaskDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
     @Test
     @DisplayName("DELETE api/tasks/{id} поз")
     void deleteTask_positive_existingTask_returnsNoContent() {
-        Task created = restTemplate.postForObject(baseUrl(),
-                new Task(null, "To Delete", "Desc", false), Task.class);
+        TaskDto created = restTemplate.postForObject(baseUrl(),
+                new TaskDto(null, "To Delete", "Desc", false), TaskDto.class);
         assertThat(created).isNotNull();
 
         ResponseEntity<Void> response = restTemplate.exchange(
@@ -130,7 +130,7 @@ class TaskControllerIntegrationTest {
                 Void.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
 
-        ResponseEntity<Task> getAfter = restTemplate.getForEntity(baseUrl() + "/" + created.getId(), Task.class);
+        ResponseEntity<TaskDto> getAfter = restTemplate.getForEntity(baseUrl() + "/" + created.getId(), TaskDto.class);
         assertThat(getAfter.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 
