@@ -1,11 +1,13 @@
 package com.mipt.sudarkingeorgiy.dto;
 
 import com.mipt.sudarkingeorgiy.model.Priority;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+@Schema(description = "Task response with all fields")
 public class TaskResponseDto {
 
     private Long id;
