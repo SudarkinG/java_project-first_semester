@@ -1,0 +1,6 @@
+logging:
+  level:
+    root: INFO
+    com.mipt.sudarkingeorgiy: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.boot: DEBUG
