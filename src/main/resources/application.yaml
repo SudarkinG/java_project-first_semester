@@ -4,12 +4,18 @@ server:
 app:
   name: "Task Application"
   version: "1.0.0"
+  api-version: "2.0.0"
 
 spring:
   application:
     name: "java-course"
   profiles:
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled: true
 
 logging:
   level:
