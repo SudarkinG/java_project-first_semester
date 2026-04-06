@@ -3,8 +3,6 @@ package com.mipt.sudarkingeorgiy.repository;
 import com.mipt.sudarkingeorgiy.model.Priority;
 import com.mipt.sudarkingeorgiy.model.Task;
 import jakarta.annotation.PostConstruct;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,10 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicLong;
 
-/** Репозиторий задач в памяти. Помечен @Primary */
-@Repository
-@Primary
-public class InMemoryTaskRepository implements TaskRepository {
+public class InMemoryTaskRepository implements TaskReadRepository {
 
     private final ConcurrentMap<Long, Task> storage = new ConcurrentHashMap<>();
     private final AtomicLong idSequence = new AtomicLong(0L);
@@ -66,7 +61,6 @@ public class InMemoryTaskRepository implements TaskRepository {
         return Optional.ofNullable(storage.get(id));
     }
 
-    @Override
     public Task save(Task task) {
         long id = idSequence.incrementAndGet();
         task.setId(id);
@@ -80,7 +74,6 @@ public class InMemoryTaskRepository implements TaskRepository {
         return task;
     }
 
-    @Override
     public Task update(Long id, Task task) {
         if (!storage.containsKey(id)) {
             return null;
@@ -91,7 +84,6 @@ public class InMemoryTaskRepository implements TaskRepository {
         return task;
     }
 
-    @Override
     public void deleteById(Long id) {
         storage.remove(id);
     }

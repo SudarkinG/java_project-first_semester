@@ -59,7 +59,11 @@ public class TaskService {
     }
 
     public Task updateTask(Long id, Task task) {
-        return taskRepository.update(id, task);
+        if (!taskRepository.existsById(id)) {
+            return null;
+        }
+        task.setId(id);
+        return taskRepository.save(task);
     }
 
     public boolean deleteTask(Long id) {
