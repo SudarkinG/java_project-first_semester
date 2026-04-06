@@ -88,6 +88,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
     }
 
+    @ExceptionHandler(TaskBulkCompleteException.class)
+    public ResponseEntity<ErrorResponse> handleTaskBulkComplete(
+            TaskBulkCompleteException ex, HttpServletRequest request) {
+
+        ErrorResponse body = new ErrorResponse(
+                Instant.now(), 404, "Not Found",
+                ex.getMessage(), request.getRequestURI(), null);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleAll(
             Exception ex, HttpServletRequest request) {
