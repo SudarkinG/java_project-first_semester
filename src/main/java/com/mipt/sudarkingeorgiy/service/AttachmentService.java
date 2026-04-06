@@ -1,10 +1,15 @@
 package com.mipt.sudarkingeorgiy.service;
 
+import com.mipt.sudarkingeorgiy.exception.TaskNotFoundException;
 import com.mipt.sudarkingeorgiy.model.TaskAttachment;
+import com.mipt.sudarkingeorgiy.repository.TaskRepository;
 import com.mipt.sudarkingeorgiy.repository.TaskAttachmentRepository;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,10 +27,12 @@ import java.util.UUID;
 public class AttachmentService {
 
     private final TaskAttachmentRepository attachmentRepository;
+    private final TaskRepository taskRepository;
     private final Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
 
-    public AttachmentService(TaskAttachmentRepository attachmentRepository) {
+    public AttachmentService(TaskAttachmentRepository attachmentRepository, TaskRepository taskRepository) {
         this.attachmentRepository = attachmentRepository;
+        this.taskRepository = taskRepository;
         try {
             Files.createDirectories(this.uploadDir);
         } catch (IOException e) {
@@ -33,7 +40,16 @@ public class AttachmentService {
         }
     }
 
+    @Transactional(
+            propagation = Propagation.REQUIRED,
+            isolation = Isolation.READ_COMMITTED,
+            rollbackFor = Exception.class
+    )
     public TaskAttachment storeAttachment(Long taskId, MultipartFile file) throws IOException {
+        if (!taskRepository.existsById(taskId)) {
+            throw new TaskNotFoundException("Task not found: " + taskId);
+        }
+
         String originalFileName = file.getOriginalFilename();
         String storedFileName = UUID.randomUUID() + getExtension(originalFileName);
 
@@ -42,15 +58,20 @@ public class AttachmentService {
             Files.copy(inputStream, targetPath, StandardCopyOption.REPLACE_EXISTING);
         }
 
-        TaskAttachment attachment = new TaskAttachment();
-        attachment.setTaskId(taskId);
-        attachment.setFileName(originalFileName);
-        attachment.setStoredFileName(storedFileName);
-        attachment.setContentType(file.getContentType());
-        attachment.setSize(file.getSize());
-        attachment.setUploadedAt(LocalDateTime.now());
+        try {
+            TaskAttachment attachment = new TaskAttachment();
+            attachment.setTaskId(taskId);
+            attachment.setFileName(originalFileName);
+            attachment.setStoredFileName(storedFileName);
+            attachment.setContentType(file.getContentType());
+            attachment.setSize(file.getSize());
+            attachment.setUploadedAt(LocalDateTime.now());
 
-        return attachmentRepository.save(attachment);
+            return attachmentRepository.save(attachment);
+        } catch (RuntimeException ex) {
+            Files.deleteIfExists(targetPath);
+            throw ex;
+        }
     }
 
     public TaskAttachment getAttachment(Long attachmentId) {
