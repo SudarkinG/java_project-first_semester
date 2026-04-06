@@ -24,6 +24,7 @@ public class StubTaskRepository implements TaskReadRepository {
                 "Предопределённая задача 1",
                 false,
                 LocalDateTime.now(),
+                LocalDateTime.now(),
                 LocalDate.now().plusDays(7),
                 Priority.MEDIUM,
                 Set.of()));
@@ -32,6 +33,7 @@ public class StubTaskRepository implements TaskReadRepository {
                 "Stub task 2",
                 "Предопределённая задача 2",
                 true,
+                LocalDateTime.now(),
                 LocalDateTime.now(),
                 LocalDate.now().plusDays(14),
                 Priority.LOW,

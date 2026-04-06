@@ -35,6 +35,7 @@ public class InMemoryTaskRepository implements TaskRepository {
         t1.setDescription("Предопределённая задача 1");
         t1.setCompleted(false);
         t1.setCreatedAt(LocalDateTime.now());
+        t1.setUpdatedAt(LocalDateTime.now());
         t1.setDueDate(LocalDate.now().plusDays(7));
         t1.setPriority(Priority.MEDIUM);
         t1.setTags(Set.of());
@@ -46,6 +47,7 @@ public class InMemoryTaskRepository implements TaskRepository {
         t2.setDescription("Предопределённая задача 2");
         t2.setCompleted(true);
         t2.setCreatedAt(LocalDateTime.now());
+        t2.setUpdatedAt(LocalDateTime.now());
         t2.setDueDate(LocalDate.now().plusDays(14));
         t2.setPriority(Priority.LOW);
         t2.setTags(Set.of("demo"));
@@ -68,6 +70,12 @@ public class InMemoryTaskRepository implements TaskRepository {
     public Task save(Task task) {
         long id = idSequence.incrementAndGet();
         task.setId(id);
+        if (task.getCreatedAt() == null) {
+            task.setCreatedAt(LocalDateTime.now());
+        }
+        if (task.getUpdatedAt() == null) {
+            task.setUpdatedAt(LocalDateTime.now());
+        }
         storage.put(id, task);
         return task;
     }
@@ -78,6 +86,7 @@ public class InMemoryTaskRepository implements TaskRepository {
             return null;
         }
         task.setId(id);
+        task.setUpdatedAt(LocalDateTime.now());
         storage.put(id, task);
         return task;
     }
