@@ -2,11 +2,13 @@ package com.mipt.sudarkingeorgiy.runner;
 
 import com.mipt.sudarkingeorgiy.service.TaskService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@Profile("dev")
 public class BulkRollbackRunner implements CommandLineRunner {
 
     private final TaskService taskService;
