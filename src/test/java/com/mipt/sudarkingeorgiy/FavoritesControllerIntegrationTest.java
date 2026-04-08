@@ -27,11 +27,10 @@ class FavoritesControllerIntegrationTest {
     @DisplayName("POST + GET favorites поз")
     void addAndGetFavorites_positive() throws Exception {
         MockHttpSession session = new MockHttpSession();
-
-        mockMvc.perform(post("/api/favorites/1").session(session))
+        mockMvc.perform(post("/api/favorites/10").session(session))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(post("/api/favorites/2").session(session))
+        mockMvc.perform(post("/api/favorites/11").session(session))
                 .andExpect(status().isOk());
 
         mockMvc.perform(get("/api/favorites").session(session))
@@ -44,10 +43,10 @@ class FavoritesControllerIntegrationTest {
     void removeFavorite_positive() throws Exception {
         MockHttpSession session = new MockHttpSession();
 
-        mockMvc.perform(post("/api/favorites/1").session(session))
+        mockMvc.perform(post("/api/favorites/10").session(session))
                 .andExpect(status().isOk());
 
-        mockMvc.perform(delete("/api/favorites/1").session(session))
+        mockMvc.perform(delete("/api/favorites/10").session(session))
                 .andExpect(status().isOk());
 
         mockMvc.perform(get("/api/favorites").session(session))

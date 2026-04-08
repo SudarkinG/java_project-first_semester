@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,10 +52,10 @@ class TaskControllerIntegrationTest {
     @DisplayName("GET /api/tasks/{id} поз")
     void getTaskById_positive_existingTask_returnsTask() {
         ResponseEntity<TaskResponseDto> response =
-                restTemplate.getForEntity(baseUrl() + "/1", TaskResponseDto.class);
+                restTemplate.getForEntity(baseUrl() + "/10", TaskResponseDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getId()).isEqualTo(1L);
+        assertThat(response.getBody().getId()).isEqualTo(10L);
     }
 
     @Test
@@ -126,7 +125,7 @@ class TaskControllerIntegrationTest {
                 """;
         HttpEntity<String> entity = new HttpEntity<>(json, jsonHeaders());
         ResponseEntity<TaskResponseDto> response = restTemplate.exchange(
-                baseUrl() + "/1", HttpMethod.PUT, entity, TaskResponseDto.class);
+                baseUrl() + "/10", HttpMethod.PUT, entity, TaskResponseDto.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().getTitle()).isEqualTo("Updated title");

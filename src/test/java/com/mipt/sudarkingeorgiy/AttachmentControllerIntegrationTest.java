@@ -37,7 +37,7 @@ class AttachmentControllerIntegrationTest {
         MockMultipartFile file = new MockMultipartFile(
                 "file", "test.txt", MediaType.TEXT_PLAIN_VALUE, "Hello World".getBytes());
 
-        mockMvc.perform(multipart("/api/tasks/1/attachments").file(file))
+        mockMvc.perform(multipart("/api/tasks/10/attachments").file(file))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").exists())
                 .andExpect(jsonPath("$.fileName").value("test.txt"))
@@ -50,7 +50,7 @@ class AttachmentControllerIntegrationTest {
         MockMultipartFile file = new MockMultipartFile(
                 "file", "empty.txt", MediaType.TEXT_PLAIN_VALUE, new byte[0]);
 
-        mockMvc.perform(multipart("/api/tasks/1/attachments").file(file))
+        mockMvc.perform(multipart("/api/tasks/10/attachments").file(file))
                 .andExpect(status().isBadRequest());
     }
 
@@ -60,7 +60,7 @@ class AttachmentControllerIntegrationTest {
         MockMultipartFile file = new MockMultipartFile(
                 "file", "download-test.txt", MediaType.TEXT_PLAIN_VALUE, "content".getBytes());
 
-        MvcResult uploadResult = mockMvc.perform(multipart("/api/tasks/1/attachments").file(file))
+        MvcResult uploadResult = mockMvc.perform(multipart("/api/tasks/10/attachments").file(file))
                 .andExpect(status().isCreated())
                 .andReturn();
 
@@ -76,7 +76,7 @@ class AttachmentControllerIntegrationTest {
     @Test
     @DisplayName("GET list поз")
     void getAttachments_positive_returnsList() throws Exception {
-        mockMvc.perform(get("/api/tasks/1/attachments"))
+        mockMvc.perform(get("/api/tasks/10/attachments"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").isArray());
     }
@@ -87,7 +87,7 @@ class AttachmentControllerIntegrationTest {
         MockMultipartFile file = new MockMultipartFile(
                 "file", "to-delete.txt", MediaType.TEXT_PLAIN_VALUE, "delete me".getBytes());
 
-        MvcResult uploadResult = mockMvc.perform(multipart("/api/tasks/1/attachments").file(file))
+        MvcResult uploadResult = mockMvc.perform(multipart("/api/tasks/10/attachments").file(file))
                 .andExpect(status().isCreated())
                 .andReturn();
 
