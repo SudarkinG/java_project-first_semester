@@ -18,6 +18,9 @@ temp/
 logs/
 *.log
 
+# Local uploads / runtime artifacts
+uploads/
+
 # Dependency caches
 lib/
 node_modules/
