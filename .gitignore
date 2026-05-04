@@ -9,6 +9,10 @@ target/
 out/
 build/
 
+local.properties
+
+uploads/
+
 # Class files
 *.class
 
